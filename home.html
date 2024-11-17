@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: lightgray;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden; /* Hide horizontal scrollbars */
+        }
+
+        nav {
+            background-color: gray;
+            position: fixed;
+            height: 100px; /* Increase height */
+            padding: 15px 20px; /* Add padding */
+            font-size: 12px; /* Increase font size */
+            display: flex; /* Use flexbox for layout */
+            align-items: center; /* Center items vertically */
+            width: 100%; /* Full width */
+            z-index: 1000; /* Make sure it's on top */
+            position: sticky; /* Sticky position */
+            top: 0; /* Stick to the top */
+        }
+
+        .content {
+            font-size: 20px; /* Adjusted font size for readability */
+            text-align: justify;
+            max-width: 800px;/* Limit width for better readability */
+            margin: 10px 20px; /* Add margin for spacing from nav */
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0; /* Add some space above and below */
+        }
+
+        ul, ol {
+            text-align: left;
+            margin: 10px 0;
+            padding-left: 20px;
+            font-size: 20px; /* Adjusted font size for readability */
+        }
+
+        .image-container {
+            display: flex;
+            overflow-x: auto; /* Horizontal scroll */
+            scroll-behavior: smooth; /* Smooth scrolling */
+            max-width: 100%;
+            gap: 15px; /* Space between images */
+            white-space: nowrap; /* Prevent wrapping */
+            margin-top: 20px;
+        }
+
+        .image-item {
+            min-width: 500px; /* Minimum width for each image */
+            border: 1px solid #ccc; /* Add border style */
+            border-radius: 5px; /* Rounded corners */
+            overflow: hidden;
+        }
+
+        .image-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        footer {
+            text-align: center;
+            position: relative;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="home.html"><img src="logo.png" width="100" height="80" alt="Logo"> Money Mate</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="income-expense.html">Income & Expense</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="dashboard.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Profile</a>
+                    </li>
+                </ul>
+            </div>
+            <button id="logout-btn" class="btn btn-danger ms-auto" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+    <h1>Money Mate - Manage your finances effectively!!</h1>
+
+
+    <div class="content">
+        <h1>Take Control of Your Finances Today!</h1>
+        <p>Managing your expenses doesn’t have to be a chore. With our easy-to-use Expense Tracker, you can gain insights into your spending habits, set budgets, and achieve your financial goals—all in one place!</p>
+    </div>
+
+    <div class="image-container" id="imageContainer">
+        <div class="image-item"><img src="How To Save Money By Organizing Your Life Instagram Infographic Carousel for Business Coaches .png" alt="Image 1"></div>
+        <div class="image-item"><img src="pho.jpeg" alt="Image 2"></div>
+        <div class="image-item"><img src="ph.jpeg" alt="Image 3"></div>
+        <div class="image-item"><img src="girl.jpeg" alt="Image 4"></div>
+        <div class="image-item"><img src="pig.jpeg" alt="Image 5"></div>
+        <div class="image-item"><img src="canva.jpeg" alt="Image 6"></div>
+        <div class="image-item"><img src="WhatsApp Image 2024-10-04 at 8.12.51 PM.jpeg" alt="Image 7"></div>
+    </div>
+
+    <div class="content">
+        <h1>Why Choose Our Expense Tracker?</h1>
+        <ul>
+            <li>User-Friendly Interface</li>
+            <li>Real-Time Tracking</li>
+            <li>Customizable Categories</li>
+            <li>Budgeting Tools</li>
+            <li>Visual Reports</li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <h1>Security Features</h1>
+        <p>Your financial data is sensitive, and we take its security seriously. Our platform uses industry-standard encryption to protect your information. Additionally, we employ regular security audits and updates to ensure your data remains safe.</p>
+    </div>
+
+    <div class="content">
+        <h1>User Testimonials</h1>
+        <p><strong>Sarah T.</strong>: "This tracker has changed the way I manage my money. The budgeting tools are fantastic!"</p>
+        <p><strong>John D.</strong>: "I love the insights I get from the reports. It has really helped me cut back on unnecessary spending."</p>
+        <p><strong>Emily R.</strong>: "User-friendly and reliable. I can't imagine my financial planning without it!"</p>
+    </div>
+
+    <div class="content">
+        <h1>FAQs</h1>
+        <ul>
+            <li><strong>How do I create a budget?</strong> <br> You can create a budget by going to the budgeting section, setting your categories, and entering your limits.</li>
+            <li><strong>Can I access my data on multiple devices?</strong> <br> Yes! Your data syncs across all devices where you log in to your account.</li>
+            <li><strong>What should I do if I forget my password?</strong> <br> Click on the 'Forgot Password' link on the login page to reset your password.</li>
+            <li><strong>Is my data safe?</strong> <br> Absolutely! We use high-level encryption and security protocols to protect your information.</li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <h1>Contact Us</h1>
+        <p>Have questions? We’re here to help! Reach out to our support team at <a href="mailto:moneymate@gmail.com">moneymate@gmail.com</a> or visit our FAQ page for more information.</p>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Money Mate</p>
+    </footer>
+
+    <script>
+        const container = document.getElementById('imageContainer');
+        let scrollAmount = 200; // Amount to scroll each interval
+        let scrollInterval = 3000; // Time interval in milliseconds
+
+        function autoScroll() {
+            container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            // Reset scroll to the beginning if at the end
+            if (container.scrollLeft + container.clientWidth >= container.scrollWidth) {
+                container.scrollLeft = 0;
+            }
+        }
+
+        setInterval(autoScroll, scrollInterval);
+
+        function logout() {
+            alert("Logout functionality not implemented.");
+            // Implement your logout functionality here
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

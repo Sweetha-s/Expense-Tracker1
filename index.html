@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker - Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url("coins.jpeg");
+            background-size: cover;
+            background-position: center;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+        }
+        header {
+            text-align: center;
+            margin-top: 50px;
+        }
+        h4 {
+            color: #ff6f61;
+        }
+        .auth-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 200px auto;
+        }
+        .form-label {
+            color: orangered;
+        }
+        .btn-primary {
+            background-color: #6a1b9a;
+            border-color: #6a1b9a;
+        }
+        .btn-secondary {
+            background-color: #f57f17;
+            border-color: #f57f17;
+        }
+        nav{
+            background-color: #333;
+            color: white;
+            height: 100px; /* Increase height */
+            padding: 15px 20px; /* Add padding */
+            font-size: 22px; /* Increase font size */
+            font-size: larger;
+            display: flex; /* Use flexbox for layout */
+            align-items: center; /* Center items vertically */
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="home.html"><img src="logo.jpeg" width="100" height="80" alt="Logo"> Money Mate</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="income-expense.html">Income & Expense</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="dashboard.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Profile</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    
+    <div class="auth-container">
+        <h4 id="auth-header">Login</h4>
+        
+        <div id="login-form">
+            <div class="mb-3">
+                <label for="loginUsername" class="form-label">Username</label>
+                <input type="text" class="form-control" id="loginUsername" placeholder="Enter your username">
+            </div>
+            <div class="mb-3">
+                <label for="loginPassword" class="form-label">Password</label>
+                <input type="password" class="form-control" id="loginPassword" placeholder="Enter your password">
+            </div>
+            <button class="btn btn-primary" onclick="login()">Login</button>
+            <button class="btn btn-secondary" onclick="showRegister()">Create an account</button>
+        </div>
+
+        <div id="register-form" style="display: none;">
+            <div class="mb-3">
+                <label for="registerUsername" class="form-label">Username</label>
+                <input type="text" class="form-control" id="registerUsername" placeholder="Choose a username">
+            </div>
+            <div class="mb-3">
+                <label for="registerPassword" class="form-label">Password</label>
+                <input type="password" class="form-control" id="registerPassword" placeholder="Choose a password">
+            </div>
+            <button class="btn btn-primary" onclick="register()">Register</button>
+            <button class="btn btn-secondary" onclick="showLogin()">Already have an account?</button>
+        </div>
+    </div>
+
+    <script>
+        const users = [];
+
+        function register() {
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+
+            if (username && password) {
+                users.push({ username, password });
+                alert('Registration successful! Please log in.');
+                showLogin();
+            } else {
+                alert('Please fill out all fields to register.');
+            }
+        }
+
+        function login() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const user = users.find(u => u.username === username && u.password === password);
+            if (user) {
+                localStorage.setItem('currentUser', JSON.stringify(user)); // Store user data in local storage
+                window.location.href = 'income-expense.html'; // Redirect to income-expense page
+            } else {
+                alert('Invalid username or password.');
+            }
+        }
+
+        function showRegister() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'block';
+            document.getElementById('auth-header').innerText = 'Register';
+        }
+
+        function showLogin() {
+            document.getElementById('register-form').style.display = 'none';
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('auth-header').innerText = 'Login';
+        }
+    </script>
+</body>
+</html>

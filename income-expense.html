@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker - Income & Expense</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url("coins.jpeg");
+            background-size: cover;
+            background-position: center;
+            font-family: 'Arial', sans-serif;
+            color: #ff6f61;
+        }
+        .tracker-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        nav{
+            background-color: #333;
+            color: #333;
+            height: 100px; /* Increase height */
+            padding: 15px 20px; /* Add padding */
+            font-size: 22px; /* Increase font size */
+            font-size: larger;
+            display: flex; /* Use flexbox for layout */
+            align-items: center; /* Center items vertically */
+        }
+        h1{
+            color: black;
+        }
+        
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="home.html"><img src="logo.jpeg" width="100" height="80" alt="Logo"> Money Mate</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="income-expense.html">Income & Expense</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="dashboard.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Profile</a>
+                    </li>
+                </ul>
+                <button id="logout-btn" class="btn btn-danger ms-auto" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-4">
+        <h1 class="text-center">Income & Expense</h1>
+       
+        
+        <div class="tracker-container mt-4">
+            <div class="row">
+                <!-- Income Section -->
+                <div class="col-md-6">
+                    <h4>Income</h4>
+                    <div class="mb-3">
+                        <label for="incomeSource" class="form-label">Source</label>
+                        <input type="text" class="form-control" id="incomeSource" placeholder="Source of income">
+                    </div>
+                    <div class="mb-3">
+                        <label for="incomeAmount" class="form-label">Amount</label>
+                        <input type="number" class="form-control" id="incomeAmount" placeholder="Income amount">
+                    </div>
+                    <div class="mb-3">
+                        <label for="incomeDate" class="form-label">Date</label>
+                        <input type="date" class="form-control" id="incomeDate">
+                    </div>
+                    <button class="btn btn-primary" onclick="addIncome()">Add Income</button>
+                    <button class="btn btn-danger" onclick="resetIncome()">Reset Income</button>
+                </div>
+
+                <!-- Expense Section -->
+                <div class="col-md-6">
+                    <h4>Expense</h4>
+                    <div class="mb-3">
+                        <label for="expenseDescription" class="form-label">Description</label>
+                        <input type="text" class="form-control" id="expenseDescription" placeholder="Description of expense">
+                    </div>
+                    <div class="mb-3">
+                        <label for="expenseAmount" class="form-label">Amount</label>
+                        <input type="number" class="form-control" id="expenseAmount" placeholder="Expense amount">
+                    </div>
+                    <div class="mb-3">
+                        <label for="expenseCategory" class="form-label">Category</label>
+                        <select class="form-control" id="expenseCategory" required>
+                            <option value="Food">Food</option>
+                            <option value="Travel">Travel</option>
+                            <option value="Entertainment">Entertainment</option>
+                            <option value="Utilities">Utilities</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Rent">Rent</option>
+                            <option value="Education">Education</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="expenseDate" class="form-label">Date</label>
+                        <input type="date" class="form-control" id="expenseDate">
+                    </div>
+                    <button class="btn btn-primary" onclick="addExpense()">Add Expense</button>
+                    <button class="btn btn-danger" onclick="resetExpenses()">Reset Expenses</button>
+                </div>
+            </div>
+
+            <!-- Total Income, Total Expenses, Remaining Amount -->
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="alert alert-info text-center">
+                        <h5>Total Income: <span id="totalIncome">0.00</span></h5>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="alert alert-danger text-center">
+                        <h5>Total Expenses: <span id="totalExpenses">0.00</span></h5>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="alert alert-success text-center">
+                        <h5>Remaining Amount: <span id="remainingAmount">0.00</span></h5>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Button to go to Dashboard -->
+            <button class="btn btn-secondary" onclick="goToDashboard()">Go to Dashboard</button>
+        </div>
+
+        <script>
+            let totalIncome = 0;
+            let totalExpenses = 0;
+
+            function updateTotals() {
+                document.getElementById('totalIncome').innerText = totalIncome.toFixed(2);
+                document.getElementById('totalExpenses').innerText = totalExpenses.toFixed(2);
+                document.getElementById('remainingAmount').innerText = (totalIncome - totalExpenses).toFixed(2);
+            }
+
+            function addIncome() {
+                const source = document.getElementById('incomeSource').value;
+                const amount = parseFloat(document.getElementById('incomeAmount').value);
+                const date = document.getElementById('incomeDate').value;
+
+                if (source && amount && date) {
+                    totalIncome += amount;
+                    updateTotals();
+                } else {
+                    alert('Please fill out all income fields.');
+                }
+            }
+
+            function addExpense() {
+                const description = document.getElementById('expenseDescription').value;
+                const amount = parseFloat(document.getElementById('expenseAmount').value);
+                const category = document.getElementById('expenseCategory').value;
+                const date = document.getElementById('expenseDate').value;
+
+                if (description && amount && category && date) {
+                    totalExpenses += amount;
+                    updateTotals();
+
+                    const expenseData = {
+                        description: description,
+                        amount: amount,
+                        category: category,
+                        date: date
+                    };
+                    const expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+                    expenses.push(expenseData);
+                    localStorage.setItem('expenses', JSON.stringify(expenses));
+                } else {
+                    alert('Please fill out all expense fields.');
+                }
+            }
+
+            function resetIncome() {
+                totalIncome = 0;
+                updateTotals();
+                alert('Income has been reset.');
+            }
+
+            function resetExpenses() {
+                totalExpenses = 0;
+                updateTotals();
+                alert('Expenses have been reset.');
+            }
+
+            function goToDashboard() {
+                window.location.href = 'dashboard.html'; // Redirect to dashboard
+            }
+
+            function logout() {
+                // Clear user data and redirect
+                window.location.href = 'index.html'; 
+            }
+        </script>
+    </div>
+</body>
+</html>

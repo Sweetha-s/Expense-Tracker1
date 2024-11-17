@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker- Without Bootstrap</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background: linear-gradient(to right, #ffecd2, #fcb69f);
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            background-size: cover;
+            background-position: center;
+            background-image: url("coins.jpeg");
+        }
+        h4 {
+            color: #ff6f61;
+        }
+        .tracker-container, .auth-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        .auth-container {
+            max-width: 400px;
+            margin: 200px auto;
+        }
+        .form-label {
+            color: orangered;
+        }
+        .btn-primary {
+            background-color: #6a1b9a;
+            border-color: #6a1b9a;
+        }
+        .btn-primary:hover {
+            background-color: #8e24aa;
+            border-color: #8e24aa;
+        }
+        .btn-secondary {
+            background-color: #f57f17;
+            border-color: #f57f17;
+        }
+        .btn-secondary:hover {
+            background-color: #ff8f00;
+            border-color: #ff8f00;
+        }
+        #logout-btn {
+            background-color: #d50000;
+            border-color: #d50000;
+            color: white;
+        }
+        #logout-btn:hover {
+            background-color: #ff1744;
+        }
+        .btn-danger {
+            background-color: #c62828;
+            border-color: #c62828;
+        }
+        .btn-danger:hover {
+            background-color: #e57373;
+        }
+        .table-responsive {
+            max-height: 300px; /* Adjust the height as needed */
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body class="container py-4">
+
+    <!-- Authentication Section -->
+    <div id="auth-section" class="auth-container">
+        <h4 id="auth-header">Login</h4>
+
+        <!-- Registration Form -->
+        <div class="row">
+            <div class="col">
+                <div id="register-form" style="display: none;">
+                    <div class="mb-3">
+                        <label for="registerUsername" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="registerUsername" placeholder="Choose a username">
+                    </div>
+                    <div class="mb-3">
+                        <label for="registerPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="registerPassword" placeholder="Choose a password">
+                    </div>
+                    <button class="btn btn-primary" onclick="register()">Register</button>
+                    <button class="btn btn-secondary" onclick="showLogin()">Already have an account?</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Form -->
+        <div id="login-form">
+            <div class="mb-3">
+                <label for="loginUsername" class="form-label">Username</label>
+                <input type="text" class="form-control" id="loginUsername" placeholder="Enter your username">
+            </div>
+            <div class="mb-3">
+                <label for="loginPassword" class="form-label">Password</label>
+                <input type="password" class="form-control" id="loginPassword" placeholder="Enter your password">
+            </div>
+            <button class="btn btn-primary" onclick="login()">Login</button>
+            <button class="btn btn-secondary" onclick="showRegister()">Create an account</button>
+        </div>
+    </div>
+
+    <!-- Expense Tracker Section (hidden initially) -->
+    <div id="tracker-section" style="display:none;" class="tracker-container">
+        <!-- Logout Button -->
+        <button id="logout-btn" class="btn" onclick="logout()">Logout</button>
+
+        <!-- Income and Expense Sections -->
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Income</h4>
+                <div class="mb-3">
+                    <label for="incomeSource" class="form-label">Source</label>
+                    <input type="text" class="form-control" id="incomeSource" placeholder="Source of income">
+                </div>
+                <div class="mb-3">
+                    <label for="incomeAmount" class="form-label">Amount</label>
+                    <input type="number" class="form-control" id="incomeAmount" placeholder="Income amount">
+                </div>
+                <div class="mb-3">
+                    <label for="incomeDate" class="form-label">Date</label>
+                    <input type="date" class="form-control" id="incomeDate">
+                </div>
+                <button class="btn btn-primary" onclick="addIncome()">Add Income</button>
+                <button class="btn btn-danger" onclick="resetIncome()">Reset Income</button>
+            </div>
+
+            <div class="col-md-6">
+                <h4>Expense</h4>
+                <div class="mb-3">
+                    <label for="expenseDescription" class="form-label">Description</label>
+                    <input type="text" class="form-control" id="expenseDescription" placeholder="Description of expense">
+                </div>
+                <div class="mb-3">
+                    <label for="expenseAmount" class="form-label">Amount</label>
+                    <input type="number" class="form-control" id="expenseAmount" placeholder="Expense amount">
+                </div>
+                <div class="mb-3">
+                    <label for="expenseCategory" class="form-label">Category</label>
+                    <select class="form-control" id="expenseCategory" required>
+                        <option value="Food">Food</option>
+                        <option value="Travel">Travel</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Healthcare">Healthcare</option>
+                        <option value="Rent">Rent</option>
+                        <option value="Education">Education</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="expenseDate" class="form-label">Date</label>
+                    <input type="date" class="form-control" id="expenseDate">
+                </div>
+                <button class="btn btn-primary" onclick="addExpense()">Add Expense</button>
+                <button class="btn btn-danger" onclick="resetExpenses()">Reset Expenses</button>
+            </div>
+        </div>
+
+        <!-- Summary Section -->
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="alert alert-info text-center">
+                    <h5>Total Income: $<span id="totalIncome">0.00</span></h5>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="alert alert-danger text-center">
+                    <h5>Total Expenses: $<span id="totalExpenses">0.00</span></h5>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="alert alert-success text-center">
+                    <h5>Remaining Amount: $<span id="remainingAmount">0.00</span></h5>
+                </div>
+            </div>
+        </div>
+
+             <!-- Inside the Chart Section -->
+<div class="row mt-4">
+    <div class="col-md-4">
+        <canvas id="pieChart"></canvas>
+    </div>
+    <div class="col-md-6" style="margin-top: 20px;"> <!-- Added margin-top here -->
+        <canvas id="barChart"></canvas>
+    </div>
+</div>
+  
+
+        <!-- Expense List -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h3>Expense List</h3>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Category</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="expenseTable">
+                            <!-- Expenses will be displayed here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- JS for functionality and authentication -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            let totalIncome = 0;
+            let totalExpenses = 0;
+            const users = [];
+            let currentUser = null;
+            const expenseTable = document.getElementById('expenseTable');
+            let pieChart, barChart;
+
+            // Initialize Charts
+
+    // Initialize Charts
+    function initCharts() {
+        const ctxPie = document.getElementById('pieChart').getContext('2d');
+        const ctxBar = document.getElementById('barChart').getContext('2d');
+
+        // Pie Chart for Expenses
+        pieChart = new Chart(ctxPie, {
+            type: 'pie',
+            data: {
+                labels: ['Food', 'Travel', 'Entertainment', 'Utilities', 'Other', 'Healthcare', 'Rent', 'Education'], // Added categories
+                datasets: [{
+                    label: 'Expenses by Category',
+                    data: [0, 0, 0, 0, 0, 0, 0, 0], // Adjusted data array to match labels
+                    backgroundColor: ['#ff6f61', '#6a1b9a', '#f57f17', '#26a69a', '#42a5f5', '#ffeb3b', '#ff5722', '#795548'], // Added colors
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+        // Bar Chart for Income vs Expenses
+        barChart = new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: ['Income', 'Expenses', 'Food', 'Travel', 'Entertainment', 'Utilities', 'Other', 'Healthcare', 'Rent', 'Education'], // Added categories
+                datasets: [{
+                    label: 'Amount',
+                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // Adjusted data array to match labels
+                    backgroundColor: ['#42a5f5', '#ef5350', '#ff6f61', '#6a1b9a', '#f57f17', '#26a69a', '#42a5f5', '#ffeb3b', '#ff5722', '#795548'], // Added colors
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+    // Update the updateCharts function to include new categories
+    function updateCharts() {
+        // Get category totals for pie chart
+        const categoryTotals = {
+            'Food': 0,
+            'Travel': 0,
+            'Entertainment': 0,
+            'Utilities': 0,
+            'Other': 0,
+            'Healthcare': 0,
+            'Rent': 0,
+            'Education': 0,
+        };
+
+        document.querySelectorAll('#expenseTable tr').forEach(row => {
+            const category = row.cells[2].innerText;
+            const amount = parseFloat(row.cells[1].innerText.substring(1)); // Remove "$"
+            if (categoryTotals[category] !== undefined) {
+                categoryTotals[category] += amount;
+            }
+        });
+
+        // Update pie chart data
+        pieChart.data.datasets[0].data = [
+            categoryTotals['Food'],
+            categoryTotals['Travel'],
+            categoryTotals['Entertainment'],
+            categoryTotals['Utilities'],
+            categoryTotals['Other'],
+            categoryTotals['Healthcare'],
+            categoryTotals['Rent'],
+            categoryTotals['Education'],
+        ];
+        pieChart.update();
+
+        // Update bar chart data (Income vs Expenses)
+        barChart.data.datasets[0].data = [
+            totalIncome,
+            totalExpenses,
+            categoryTotals['Food'],
+            categoryTotals['Travel'],
+            categoryTotals['Entertainment'],
+            categoryTotals['Utilities'],
+            categoryTotals['Other'],
+            categoryTotals['Healthcare'],
+            categoryTotals['Rent'],
+            categoryTotals['Education'],
+        ];
+        barChart.update();
+
+        // Update Remaining Amount
+        updateRemainingAmount();
+    }
+
+
+            function addIncome() {
+                const source = document.getElementById('incomeSource').value;
+                const amount = parseFloat(document.getElementById('incomeAmount').value);
+                const date = document.getElementById('incomeDate').value;
+
+                if (source && amount && date) {
+                    totalIncome += amount;
+                    document.getElementById('totalIncome').innerText = totalIncome.toFixed(2);
+                    updateCharts();
+                } else {
+                    alert('Please fill out all income fields.');
+                }
+            }
+
+            function addExpense() {
+                const description = document.getElementById('expenseDescription').value;
+                const amount = parseFloat(document.getElementById('expenseAmount').value);
+                const category = document.getElementById('expenseCategory').value;
+                const date = document.getElementById('expenseDate').value;
+
+                if (description && amount && category && date) {
+                    totalExpenses += amount;
+                    document.getElementById('totalExpenses').innerText = totalExpenses.toFixed(2);
+
+                    const row = expenseTable.insertRow();
+                    row.insertCell(0).innerText = description;
+                    row.insertCell(1).innerText = `$${amount.toFixed(2)}`;
+                    row.insertCell(2).innerText = category;
+                    row.insertCell(3).innerText = date;
+
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'btn btn-danger btn-sm';
+                    deleteBtn.innerText = 'Delete';
+                    deleteBtn.onclick = function() {
+                        const amountToRemove = parseFloat(row.cells[1].innerText.substring(1)); // Remove "$"
+                        totalExpenses -= amountToRemove;
+                        document.getElementById('totalExpenses').innerText = totalExpenses.toFixed(2);
+                        row.remove();
+                        updateCharts();
+                    };
+                    row.insertCell(4).appendChild(deleteBtn);
+
+                    updateCharts();
+                } else {
+                    alert('Please fill out all expense fields.');
+                }
+            }
+
+            function resetIncome() {
+                totalIncome = 0;
+                document.getElementById('totalIncome').innerText = totalIncome.toFixed(2);
+                updateCharts();
+            }
+
+            function resetExpenses() {
+                totalExpenses = 0;
+                document.getElementById('totalExpenses').innerText = totalExpenses.toFixed(2);
+                expenseTable.innerHTML = '';
+                updateCharts();
+            }
+
+            // Function to update the remaining amount
+            function updateRemainingAmount() {
+                const remainingAmount = totalIncome - totalExpenses;
+                document.getElementById('remainingAmount').innerText = remainingAmount.toFixed(2);
+            }
+
+            // Authentication
+            function register() {
+                const username = document.getElementById('registerUsername').value;
+                const password = document.getElementById('registerPassword').value;
+
+                if (username && password) {
+                    users.push({ username, password });
+                    alert('Registration successful! Please log in.');
+                    showLogin();
+                } else {
+                    alert('Please fill out all fields to register.');
+                }
+            }
+
+            function login() {
+                const username = document.getElementById('loginUsername').value;
+                const password = document.getElementById('loginPassword').value;
+
+                const user = users.find(u => u.username === username && u.password === password);
+                if (user) {
+                    currentUser = user;
+                    document.getElementById('auth-section').style.display = 'none';
+                    document.getElementById('tracker-section').style.display = 'block';
+                    initCharts(); // Initialize charts when user logs in
+                } else {
+                    alert('Invalid username or password.');
+                }
+            }
+
+            function logout() {
+                currentUser = null;
+                document.getElementById('auth-section').style.display = 'block';
+                document.getElementById('tracker-section').style.display = 'none';
+            }
+
+            function showRegister() {
+                document.getElementById('login-form').style.display = 'none';
+                document.getElementById('register-form').style.display = 'block';
+                document.getElementById('auth-header').innerText = 'Register';
+            }
+
+            function showLogin() {
+                document.getElementById('login-form').style.display = 'block';
+                document.getElementById('register-form').style.display = 'none';
+                document.getElementById('auth-header').innerText = 'Login';
+            }
+
+            
+
+
+        </script>
+    </div>
+</body>
+</html>
